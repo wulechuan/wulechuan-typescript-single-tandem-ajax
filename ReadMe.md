@@ -111,7 +111,7 @@ const responseData = await singleTandomAJAX<TTheResponseData>({
     requestType: '随便一个非空字符串，作为唯一标识即可',
     axiosRequestConfig: {
         method: 'POST',
-        url: 'https://nan-chang.wulechuan.cn/non-exsiting/resultful-api/something',
+        url: 'https://nan-chang.wulechuan.cn/non-exsiting/restful-api/update-info',
         data: {
             message: '大家好！我来自伟大的中国。',
         },
@@ -152,7 +152,7 @@ const responseData = await singleTandomAJAX({
     requestType: '随便一个非空字符串，作为唯一标识即可',
     axiosRequestConfig: {
         method: 'POST',
-        url: 'https://nan-chang.wulechuan.cn/non-exsiting/resultful-api/something',
+        url: 'https://nan-chang.wulechuan.cn/non-exsiting/restful-api/update-info',
         data: {
             message: '大家好！我来自伟大的中国。',
         },
