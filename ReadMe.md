@@ -181,7 +181,7 @@ console.log(responseData)
 
 
 
-与构建程序签名有关的源代码片段如下：
+与【构建函数】之**签名**（Signature）有关的源代码片段如下：
 
 ```ts
 import { AxiosRequestConfig } from 'axios'
@@ -194,11 +194,12 @@ export function createSingleTandomAJAXController(
 
 
 
-### 单串式 AJAX 控制器实例
+### 单串式 AJAX 控制器
 
-单串式 AJAX 控制器实例，不妨简称**实例**。实例由构建程序构建。每个单串式 AJAX 则可视作 axios 的加强版，但二者用法略有不同。
+单串式 AJAX 控制器，不妨简称“**控制器**”，它是一个函数，因此称其为“**控制器函数**”也无妨。控制器函数由构建函数构建。每个单串式 AJAX 控制器可视作 axios 的加强版，但二者用法略有不同。
 
-与实例签名有关的源代码片段如下：
+
+与【控制器函数】之**签名**（Signature）有关的源代码片段如下：
 
 ```ts
 import { AxiosResponse } from 'axios'
@@ -222,7 +223,7 @@ async function singleTandemAJAX<TResponseData>(
 
 #### `options`
 
-类型为 `TSingleTandemAJAXOptions`。其下有三个属性，其中两个可选，一个必须。如下。
+类型为 `TSingleTandemAJAXOptions`。其下有 3 个属性，其中 2 个可选，1 个必须。如下。
 
 ##### `options.requestType?`
 
@@ -239,7 +240,7 @@ async function singleTandemAJAX<TResponseData>(
 
 提供专门用于本次调用时须采用的 axios 实例（类型为 `AxiosInstance`）。万一你需要在借助本工具排斥后续 AJAX 请求的同时，必须临时启用一个特定的 axios 实例，则将其通过该参数传给单串式 AJAX 控制器实例，即可。
 
-注意，即便在构建函数中预先构建好了 axios 实例，如果此参数（指 `options.axiosInstance`）临时提供了一个 axios 实例，则会优先采用该临时提供的 axios 实例，而不采用预先构建好的 axios 实例。
+注意，即便在构建函数中预先构建好了 axios 实例，如果此参数（指 `options.axiosInstance`）临时提供了一个 axios 实例，则会采用该临时提供的 axios 实例，而不采用预先构建好的 axios 实例。
 
 
 ##### `options.axiosRequestConfig`

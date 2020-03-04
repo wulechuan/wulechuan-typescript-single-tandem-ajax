@@ -1,7 +1,7 @@
 {
   "name": "@wulechuan/single-tandem-ajax",
   "author": "wulechuan <wulechuan@live.com>",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
   "license": "WTFPL",
   "keywords": [
@@ -17,8 +17,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "tsc  --outDir dist",
-    "beforeGitCommit": "npm  start",
-    "prepublishOnly": "npm   start"
+    "beforeGitCommit": "npm  i    &&    npm  start",
+    "prepublishOnly": "npm   beforeGitCommit"
   },
   "homepage": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git#readme",
   "repository": {
