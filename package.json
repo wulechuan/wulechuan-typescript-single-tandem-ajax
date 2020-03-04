@@ -18,7 +18,7 @@
   "scripts": {
     "start": "tsc  --outDir dist",
     "beforeGitCommit": "npm  i    &&    npm  start",
-    "prepublishOnly": "npm   beforeGitCommit"
+    "prepublishOnly": "npm  run  beforeGitCommit"
   },
   "homepage": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git#readme",
   "repository": {
