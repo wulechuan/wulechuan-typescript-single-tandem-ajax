@@ -47,7 +47,7 @@ Instead, we want:
 This tool should be the right one to choose to solve above problem. As a plus, this tool is written in TypeScript.
 
 
-> Note that this tool is **not** a queueing tool. A queue delays later tasks but not abandone them. While this tool is to prevent duplications of a running task, thus it abandones later tasks.
+> Note that this tool is **not** an AJAX requests queueing tool. A queue delays later tasks but not abandone them. While this tool is to prevent duplications of a running task, thus it abandones later tasks.
 
 
 ### The Idea
@@ -74,9 +74,9 @@ Whereas a controller is not an axios instacne, they do have common points. First
 
 **So basically, the way to use this pacakage is, to invoke the creator function to get the controller function; then to invoke the controller function to start AJAX requests.**
 
-Then, why do we need to create multiple controllers, instead of use just the only controller to do all AJAX requests?
+Then, why do we need to create multiple controllers? Why don't we simply provide one controller directly, and just use the only controller to do all AJAX requests?
 
-Well, in a complex or scaled project, we might start AJAX reuqests all over the source code base. To manually keep unique `requestType` for **any** AJAX requests is neither easy, nor necessary. We often need to keep the uniqueness of AJAX `requestType` within a relative small scope, so as to keep these AJAX single tandem, plus avoiding modules from being uncessarily coupled. When mulitple controllers are created, each for a module, then the problem is solved.
+Well, in a complex or scaled project, we might start AJAX reuqests all over the source code base, especially across multiple modules. To manually ensure the uniqueness of `requestType`s for **any** AJAX requests is neither easy, nor necessary. We often need to keep the uniqueness of AJAX `requestType`s within a relative small scope, so as to keep these AJAX single tandem. As a plus, this helps avoiding modules from being uncessarily coupled. When mulitple controllers are created, each for a module, the problem is solved.
 
 There come additional rules:
 
@@ -176,9 +176,10 @@ console.log(responseData)
 
 The creator, is naturally a function, named `createSingleTandomAJAXController`. It is used to create a single tandem AJAX controller, of type `TSingleTandemAJAX`.
 
-类似于原版的 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用，借助本构建程序构建所谓实例时，也可以配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
+Just like the original axios, this tool allows us to configure some common features beforehand, for a set of AJAX requests, or maybe **all** AJAX requests. Such as the `baseURL`, `timeout` and `headers`, etc. To configure AJAX controller beforehand, you provide one and the only one argument to the creator function.
 
-> 参数中提供的配置其实是用于幕后的 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`），使用也是在幕后。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
+The argument of the creator function, if provided, is of type `AxiosRequestConfig`. It is used to create an axios instance function, of type `axiosInstance` behind the scene. Naturally, the `axios.create()` is invoke to create the axios instance, and the the argument is passed to the `axios.create()` as is. See the [related part of the official documentation of axios](https://www.npmjs.com/package/axios#axioscreateconfig).
+
 
 If no arguments are provide while invoking the creator, then a raw `axios` is used behind the scene.
 

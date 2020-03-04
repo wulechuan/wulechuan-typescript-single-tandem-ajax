@@ -86,7 +86,7 @@
 
 见下例。
 
-> 注意！采用本 Vuejs 组件之 TypeScript 版本时，`import` 语句的 `from` 指向 npm 包名，即指向 npm 包的 `main` 文件。实际上，指向的是 `./index.ts`。
+> 注意！采用本工具之 TypeScript 版本时，`import` 语句的 `from` 指向 npm 包名，即指向 npm 包的 `main` 文件。实际上，指向的是 `./index.ts`。
 
 ```ts
 import {
@@ -127,7 +127,7 @@ console.log(responseData)
 见下例。
 
 
-> 注意！采用本 Vuejs 组件之 JavaScript 版本时，`import` 语句的 `from` 指向 `./dist`。实际上，指向的是 `./dist/index.js`。
+> 注意！采用本工具之 JavaScript 版本时，`import` 语句的 `from` 指向 `./dist`。实际上，指向的是 `./dist/index.js`。
 
 ```js
 import {
@@ -175,7 +175,7 @@ console.log(responseData)
 
 类似于原版的 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用，借助本构建程序构建所谓实例时，也可以配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
 
-> 参数中提供的配置其实是用于幕后的 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`），使用也是在幕后。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
+参数中提供的配置其实是用于幕后的 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`），使用也是在幕后。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
 
 如果调用该构建程序时，省略了参数，则构建出的实例在发起 AJAX 请求时，幕后会采用 `axios` 本身，而非 `axiosInstance`。
 
