@@ -98,11 +98,9 @@ import {
 } from '@wulechuan/single-tandem-ajax'
 
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 
 
 
@@ -138,11 +136,9 @@ import {
 } from '@wulechuan/single-tandem-ajax'
 
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 
 
 
@@ -265,17 +261,15 @@ And a single tandem AJAX controller does carry one special property, named `preC
 
 ##### `TSingleTandemAJAX.preCreatedAxiosInstance`
 
-Possible value types are `null` or `AxiosInstance`.
+The value type is `AxiosInstance`.
 
 As we often configure an axios instance of its `interceptors` property, to output the "pure" `data` property of the raw response, we can also do the same configuration to this `preCreatedAxiosInstance` property, like this:
 
 ```ts
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 ```
 
 

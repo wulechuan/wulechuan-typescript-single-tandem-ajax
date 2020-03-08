@@ -94,11 +94,9 @@ import {
 } from '@wulechuan/single-tandem-ajax'
 
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 
 
 
@@ -135,11 +133,9 @@ import {
 } from '@wulechuan/single-tandem-ajax'
 
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 
 
 
@@ -261,19 +257,17 @@ async function singleTandemAJAX<TResponseData>(
 
 ##### `TSingleTandemAJAX.preCreatedAxiosInstance`
 
-该属性的取值类型为 `null` 或 `AxiosInstance`。
+该属性的取值类型为 `AxiosInstance`。
 
-在借助“构建函数”构建一个“实例函数”时，如果给构建函数传入了配置参数，则其幕后构建的 axios 实例，即存在该静态属性上。如果不曾传入配置参数，则不存在这样的 axios 实例，此时该静态属性取 `null`。
+在借助“构建函数”构建一个“实例函数”时，构建函数会同时构建好一个 axios 的实例，以便后续对此 axios 实例进行专门的配置，而不影响你的代码中其它地方可能存在的 axios 实例。如果给构建函数传入了配置参数，则此参数会用于构建上述 axios 实例。该实例作为“实例函数”的一个静态属性存在。
 
 我们常常喜欢利用 axios 实例的 `interceptors` 属性来预先配置原始响应数据的预处理，仅传出原始响应数据的 `data` 属性。那么，再此，我们可以对 `preCreatedAxiosInstance` 做同样的配置。例如：
 
 ```ts
 const singleTandomAJAX = createSingleTandomAJAXController()
-if (singleTandomAJAX.preCreatedAxiosInstance) {
-    singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
-        response => response.data
-    )
-}
+singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
+    response => response.data
+)
 ```
 
 

@@ -16,7 +16,7 @@ type TSingleTandemAJAXOptions = {
 
 type TSingleTandemAJAX = {
     <TResponseData>(options:TSingleTandemAJAXOptions): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
-    preCreatedAxiosInstance: null | AxiosInstance;
+    preCreatedAxiosInstance: AxiosInstance;
 };
 
 
@@ -30,11 +30,8 @@ export function createSingleTandomAJAXController(
 
 
 
-    if (typeof axiosRequestConfig === 'object' && !!axiosRequestConfig) {
-        singleTandemAJAX.preCreatedAxiosInstance = axios.create(axiosRequestConfig)
-    } else {
-        singleTandemAJAX.preCreatedAxiosInstance = null
-    }
+    const preCreatedAxiosInstance = axios.create()
+    singleTandemAJAX.preCreatedAxiosInstance = preCreatedAxiosInstance
 
 
 
@@ -43,7 +40,7 @@ export function createSingleTandomAJAXController(
     ): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined> {
         if (!options) { return }
 
-        const { requestType, axiosInstance } = options
+        const { requestType, axiosInstance: providedAxiosInstance } = options
 
         let { axiosRequestConfig } = options
 
@@ -69,20 +66,20 @@ export function createSingleTandomAJAXController(
         }
 
         if (!onGoingAJAXPromise) {
-            const usedAxiosInstance: AxiosInstance = axiosInstance || singleTandemAJAX.preCreatedAxiosInstance || axios
+            const usedAxiosInstance: AxiosInstance = providedAxiosInstance || preCreatedAxiosInstance // || axios
             onGoingAJAXPromise = usedAxiosInstance(axiosRequestConfig)
             if (requestTypeIsProvided) {
                 onGoingAJAXPromises[requestTypeString] = onGoingAJAXPromise
             }
         }
 
-        const responseRawOrResponseData = await onGoingAJAXPromise
+        const rawResponseOrResponseData = await onGoingAJAXPromise
 
         if (requestTypeIsProvided) {
             delete onGoingAJAXPromises[requestTypeString]
         }
 
-        return responseRawOrResponseData
+        return rawResponseOrResponseData
     }
 
 

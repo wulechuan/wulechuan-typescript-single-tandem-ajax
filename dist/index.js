@@ -10,18 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 export function createSingleTandomAJAXController(axiosRequestConfig) {
     const onGoingAJAXPromises = {};
-    if (typeof axiosRequestConfig === 'object' && !!axiosRequestConfig) {
-        singleTandemAJAX.preCreatedAxiosInstance = axios.create(axiosRequestConfig);
-    }
-    else {
-        singleTandemAJAX.preCreatedAxiosInstance = null;
-    }
+    const preCreatedAxiosInstance = axios.create();
+    singleTandemAJAX.preCreatedAxiosInstance = preCreatedAxiosInstance;
     function singleTandemAJAX(options) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!options) {
                 return;
             }
-            const { requestType, axiosInstance } = options;
+            const { requestType, axiosInstance: providedAxiosInstance } = options;
             let { axiosRequestConfig } = options;
             if (typeof axiosRequestConfig === 'string') {
                 axiosRequestConfig = {
@@ -38,17 +34,17 @@ export function createSingleTandomAJAXController(axiosRequestConfig) {
                 onGoingAJAXPromise = onGoingAJAXPromises[requestTypeString];
             }
             if (!onGoingAJAXPromise) {
-                const usedAxiosInstance = axiosInstance || singleTandemAJAX.preCreatedAxiosInstance || axios;
+                const usedAxiosInstance = providedAxiosInstance || preCreatedAxiosInstance; // || axios
                 onGoingAJAXPromise = usedAxiosInstance(axiosRequestConfig);
                 if (requestTypeIsProvided) {
                     onGoingAJAXPromises[requestTypeString] = onGoingAJAXPromise;
                 }
             }
-            const responseRawOrResponseData = yield onGoingAJAXPromise;
+            const rawResponseOrResponseData = yield onGoingAJAXPromise;
             if (requestTypeIsProvided) {
                 delete onGoingAJAXPromises[requestTypeString];
             }
-            return responseRawOrResponseData;
+            return rawResponseOrResponseData;
         });
     }
     return singleTandemAJAX;
