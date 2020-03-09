@@ -70,13 +70,13 @@
 
 每个所谓的控制器可视作 axios 的加强版，但二者用法略有不同。详见下文。控制器与 axios 的亦有相同点：二者都是函数。调用一次控制器，则可发起一次 AJAX 请求。由于所谓控制器实则一个函数，故亦可称为所谓“控制器函数”。
 
-**综上，使用本工具的基本思路是：调用构建函数得到控制器函数，进而调用控制器函数以发起 AJAX。**
+**综上，使用本工具的基本思路是：调用构建函数得到控制器函数，进而调用控制器函数以发起 AJAX 请求。**
 
-那么，为何允许构建多个控制器函数，而不是提供单一的控制器函数直接使用呢？因为在复杂的程序中，要任务保持整个程序所有犄角旮旯的 AJAX 请求之 `requestType`  互不相同也是一件麻烦甚至较困难的事情。我们可能希望在小范围内的代码中的一组 AJAX API 对应的 AJAX 请求做到“单串式”即可。这样即简便易行，也降低了模块之间的耦合程度。因此，我们实际上是希望多个控制器相互独立运转的。
+那么，为何允许构建多个控制器函数，而不是提供单一的控制器函数直接使用呢？因为在复杂的程序中，要人为保持整个程序所有犄角旮旯的 AJAX 请求之 `requestType`  互不相同也是一件麻烦甚至较困难的事情。我们可能希望在小范围内的代码中的一组 AJAX API 对应的 AJAX 请求做到“单串式”即可。这样即简便易行，也降低了模块之间的耦合程度。因此，我们实际上是希望多个控制器相互独立运转的。
 
 所谓“多个控制器相互独立”，本质上是指多个控制器的 `requestType` 在不同的命名空间中。因此，
 
--   由两个**不同**控制器发起 AJAX 的请求，即便两次请求恰好具备相同 `requestType` ，这两次请求也互不排斥;
+-   由两个**不同**控制器发起 AJAX 请求，即便两次请求恰好具备相同 `requestType` ，这两次请求也互不排斥;
 -   而由**同一个**控制器发起的两次 AJAX 请求，如果 `requestType` 相同，则只要先发起的请求仍为结束，后发起的那一次会被先发起的请求排斥掉，即后发起的 AJAX 请求实际上根本不会执行。
 
 
@@ -167,13 +167,13 @@ console.log(responseData)
 
 ### 构建函数
 
-构建函数名为 `createSingleTandomAJAXController`，用于构建单串式 AJAX 控制器。不妨将构建出的一个个单串式 AJAX 控制器称为所谓“实例”，实例的类型为 `TSingleTandemAJAX`。
+构建函数名为 `createSingleTandomAJAXController`。它用于构建单串式 AJAX 控制器，控制器的类型为 `TSingleTandemAJAX`。
 
-类似于原版的 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用，借助本构建程序构建所谓实例时，也可以配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
+众所周知，原版 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用。与之类似，借助本构建程序构建所谓“控制器”时，也可以预先配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
 
-参数中提供的配置其实是用于幕后的 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`），使用也是在幕后。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
+本程序在幕后会调用 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`）。上述参数，实则是用于 `axios.create()`，以在构建 axios 实例函数时对其做配置。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
 
-如果调用该构建程序时，省略了参数，则构建出的实例在发起 AJAX 请求时，幕后会采用 `axios` 本身，而非 `axiosInstance`。
+另外，本工具发起 AJAX 请求时，默认也会在幕后采用上述构建出的 axios 实例函数。
 
 
 
