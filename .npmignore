@@ -1,4 +1,5 @@
 .DS_Store
+.circleci
 .vscode
 /documents/styles
 /documents/**/*.html

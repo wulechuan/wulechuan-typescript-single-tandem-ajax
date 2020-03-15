@@ -30,7 +30,7 @@
 
 ## Introduction
 
-### Why shoul this Tool Exist
+### Why should this Tool Exist
 
 Simply put, this tool starts AJAX reuqests. This tool utilizes the famous
 [Axios](https://www.npmjs.com/package/axios) internally. So, what extra functionalities are provided by this tool over axios? Or, why should this tool exist?
@@ -39,24 +39,24 @@ We probably keep facing such type of problems: for a given AJAX API, we **don't*
 
 -   The same browser tab or window starts more than one AJAX requests to the given API at the same time.
 
-Instead, we want:
+**Instead, we want:**
 
 -   When there is already an on going AJAX request to the given API, let's call it reuqest A. If another request (request B) also tends to start to the same API, then the request B should be ignored, so that we don't request the same API repeatedly.
 
--   what's more, those codes that were to wait for the request B, which is ignored and not exists at all, should turn to wait for request A.
+-   What's more, those codes that were to wait for the request B, which is ignored and not exists at all, should turn to wait for request A.
 
-This tool should be the right one to choose to solve above problem. As a plus, this tool is written in TypeScript.
+**This tool should be the right one to choose to solve above problem. As a plus, this tool is written in TypeScript.**
 
 
-> Note that this tool is **not** an AJAX requests queueing tool. A queue delays later tasks but not abandone them. While this tool is to prevent duplications of a running task, thus it abandones later tasks.
+> Note that this tool is **not** an AJAX requests queueing tool. A queue delays later tasks but not abandones them. While this tool is to prevent duplications of a running task, thus it abandones later tasks.
 
 
 ### The Idea
 
-The idea is actually quite simple. It holds an object, as the dictionary of all on going AJAX Promises. The keys are so-called `requestType`. If another AJAX request is pending by some JavaScript(or TypeScript) codes, but with exactly the same `requestType` of some unsettled AJAX Promise, then the pending AJAX request is simply ignored, and the unsettled Promise is returned.
+The idea is actually quite simple. It holds an object, as the dictionary of all ongoing(aka unsettled) AJAX Promises. The keys are so-called `requestType`. If another AJAX request is pending by some JavaScript(or TypeScript) codes, but with exactly the same `requestType` of some unsettled AJAX Promise, then the pending AJAX request is simply ignored, and the unsettled Promise is returned.
 
 
-> In face, boolean and number values are also valid `requestType`s. But these two types are less clear than strings with meaningful contents.
+> In face, boolean and number values are also valid `requestType`s. But these two types are less meaningful than strings. Thus neither boolean nor number is recommended.
 
 
 
