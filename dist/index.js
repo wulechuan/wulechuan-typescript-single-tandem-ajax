@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import axios from 'axios';
 export function createSingleTandomAJAXController(axiosRequestConfig) {
     const onGoingAJAXPromises = {};
-    const preCreatedAxiosInstance = axios.create();
+    const preCreatedAxiosInstance = axios.create(axiosRequestConfig);
     singleTandemAJAX.preCreatedAxiosInstance = preCreatedAxiosInstance;
     function singleTandemAJAX(options) {
         return __awaiter(this, void 0, void 0, function* () {
