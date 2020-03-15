@@ -1,7 +1,7 @@
 {
   "name": "@wulechuan/single-tandem-ajax",
   "author": "wulechuan <wulechuan@live.com>",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
   "license": "WTFPL",
   "keywords": [
@@ -32,7 +32,7 @@
     "axios": "^0.19.2"
   },
   "devDependencies": {
-    "@wulechuan/css-stylus-markdown-themes": "^6.4.0",
+    "@wulechuan/css-stylus-markdown-themes": "^6.4.9",
     "typescript": "^3.8.3"
   }
 }

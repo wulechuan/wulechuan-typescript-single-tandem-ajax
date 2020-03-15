@@ -30,7 +30,7 @@ export function createSingleTandomAJAXController(
 
 
 
-    const preCreatedAxiosInstance = axios.create()
+    const preCreatedAxiosInstance = axios.create(axiosRequestConfig)
     singleTandemAJAX.preCreatedAxiosInstance = preCreatedAxiosInstance
 
 
