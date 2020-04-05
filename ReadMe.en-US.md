@@ -90,7 +90,7 @@ There come additional rules:
 
 See the example below.
 
-> Note that when working with TypeScript, for the `import` statement of this package, the `from` part points to the npm package name of its, aka the `main` file metioned in the `package.json`. To be specific, the main file is in fact `./index.ts`.
+> Note that when working with TypeScript, for the `import` statement of this package, the `from` part points to the npm package name of its, aka the `main` file metioned in the `package.json`. To be specific, the main file is in fact `./source/index.ts`.
 
 
 ```ts

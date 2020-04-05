@@ -1,9 +1,8 @@
 .DS_Store
 .circleci
 .vscode
-/documents/styles
-/documents/**/*.html
 node_modules
+/documents
 git*.sh
-/ReadMe.*.html
-/ReadMe.html
+ReadMe*.html
+tsconfig*

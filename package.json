@@ -1,7 +1,7 @@
 {
   "name": "@wulechuan/single-tandem-ajax",
   "author": "wulechuan <wulechuan@live.com>",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
   "license": "WTFPL",
   "keywords": [
@@ -14,9 +14,10 @@
     "同一时刻仅单一AJAX请求",
     "避免同时发起多个完全相同的AJAX请求"
   ],
-  "main": "index.ts",
+  "main": "source/index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "dist": "tsc  --outDir  dist",
+    "dist": "tsc  --outDir dist",
     "start": "npm  run  dist",
     "before-git-commit": "npm  i    &&    npm  run  dist",
     "prepublishOnly": "npm  run  dist"
