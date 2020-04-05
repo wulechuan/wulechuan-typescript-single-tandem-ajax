@@ -1,20 +1,24 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, {
+    AxiosInstance,
+    AxiosRequestConfig,
+    AxiosResponse,
+} from 'axios'
 
 
 
 
 
-type TOnGoingAJAXPromises = {
+export type TOnGoingAJAXPromises = {
     [requestType: string]: Promise<any>;
 };
 
-type TSingleTandemAJAXOptions = {
+export type TSingleTandemAJAXOptions = {
     requestType?: string | number;
     axiosInstance?: AxiosInstance;
     axiosRequestConfig: string | AxiosRequestConfig;
 };
 
-type TSingleTandemAJAX = {
+export type TSingleTandemAJAX = {
     <TResponseData>(options:TSingleTandemAJAXOptions): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
     preCreatedAxiosInstance: AxiosInstance;
 };

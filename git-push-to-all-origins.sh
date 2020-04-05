@@ -8,37 +8,43 @@ echo
 
 
 
-echo
-echo -e "--- \e[35m阿里云\e[0m --------------------------"
-echo
+if true; then
+    echo
+    echo -e "--- \e[35m阿里云\e[0m --------------------------"
+    echo
 
-git  push  aliyun
+    git  push  aliyun
 
-echo
-
-
-
-
-
-echo
-echo -e "--- \e[31m码云\e[0m ----------------------------"
-echo
-
-git  push  gitee
-
-echo
+    echo
+fi
 
 
 
 
 
-echo
-echo -e "--- \e[33mGitHub\e[0m -------------------------"
-echo
+if true; then
+    echo
+    echo -e "--- \e[31m码云\e[0m ----------------------------"
+    echo
 
-git  push  github
+    git  push  gitee
 
-echo
+    echo
+fi
+
+
+
+
+
+if false; then
+    echo
+    echo -e "--- \e[33mGitHub\e[0m -------------------------"
+    echo
+
+    git  push  github
+
+    echo
+fi
 
 
 
