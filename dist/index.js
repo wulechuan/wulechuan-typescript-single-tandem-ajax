@@ -8,7 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from 'axios';
-export function createSingleTandomAJAXController(axiosRequestConfig) {
+// 旧版本采用了含错别字的函数名，在此也故意保留该旧版函数名。
+export const createSingleTandomAJAXController = createSingleTandemAJAXController;
+export function createSingleTandemAJAXController(axiosRequestConfig) {
     const onGoingAJAXPromises = {};
     const preCreatedAxiosInstance = axios.create(axiosRequestConfig);
     singleTandemAJAX.preCreatedAxiosInstance = preCreatedAxiosInstance;
@@ -17,7 +19,7 @@ export function createSingleTandomAJAXController(axiosRequestConfig) {
             if (!options) {
                 return;
             }
-            const { requestType, axiosInstance: providedAxiosInstance } = options;
+            const { requestType, axiosInstance: providedAxiosInstance, shouldDisableWarningOfSkippedAJAX, } = options;
             let { axiosRequestConfig } = options;
             if (typeof axiosRequestConfig === 'string') {
                 axiosRequestConfig = {
@@ -33,7 +35,12 @@ export function createSingleTandomAJAXController(axiosRequestConfig) {
             if (requestTypeIsProvided) {
                 onGoingAJAXPromise = onGoingAJAXPromises[requestTypeString];
             }
-            if (!onGoingAJAXPromise) {
+            if (onGoingAJAXPromise) {
+                if (!shouldDisableWarningOfSkippedAJAX) {
+                    console.warn(`An AJAX request is skipped due to another AJAX of the same "requestType" is on going.\nThe requestType is "${requestType}".`);
+                }
+            }
+            else {
                 const usedAxiosInstance = providedAxiosInstance || preCreatedAxiosInstance; // || axios
                 onGoingAJAXPromise = usedAxiosInstance(axiosRequestConfig);
                 if (requestTypeIsProvided) {

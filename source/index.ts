@@ -13,9 +13,10 @@ export type TOnGoingAJAXPromises = {
 };
 
 export type TSingleTandemAJAXOptions = {
-    requestType?: string | number;
-    axiosInstance?: AxiosInstance;
-    axiosRequestConfig: string | AxiosRequestConfig;
+    axiosRequestConfig:                 string | AxiosRequestConfig;
+    requestType?:                       string | number;
+    axiosInstance?:                     AxiosInstance;
+    shouldDisableWarningOfSkippedAJAX?: boolean;
 };
 
 export type TSingleTandemAJAX = {
@@ -26,8 +27,13 @@ export type TSingleTandemAJAX = {
 
 
 
+// 旧版本采用了含错别字的函数名，在此也故意保留该旧版函数名。
+export const createSingleTandomAJAXController = createSingleTandemAJAXController
 
-export function createSingleTandomAJAXController(
+
+
+
+export function createSingleTandemAJAXController(
     axiosRequestConfig?: AxiosRequestConfig
 ): TSingleTandemAJAX {
     const onGoingAJAXPromises: TOnGoingAJAXPromises = {}
@@ -44,7 +50,11 @@ export function createSingleTandomAJAXController(
     ): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined> {
         if (!options) { return }
 
-        const { requestType, axiosInstance: providedAxiosInstance } = options
+        const {
+            requestType,
+            axiosInstance: providedAxiosInstance,
+            shouldDisableWarningOfSkippedAJAX,
+        } = options
 
         let { axiosRequestConfig } = options
 
@@ -69,7 +79,11 @@ export function createSingleTandomAJAXController(
             onGoingAJAXPromise = onGoingAJAXPromises[requestTypeString]
         }
 
-        if (!onGoingAJAXPromise) {
+        if (onGoingAJAXPromise) {
+            if (!shouldDisableWarningOfSkippedAJAX) {
+                console.warn(`An AJAX request is skipped due to another AJAX of the same "requestType" is on going.\nThe requestType is "${requestType}".`)
+            }
+        } else {
             const usedAxiosInstance: AxiosInstance = providedAxiosInstance || preCreatedAxiosInstance // || axios
             onGoingAJAXPromise = usedAxiosInstance(axiosRequestConfig)
             if (requestTypeIsProvided) {

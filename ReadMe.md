@@ -5,7 +5,7 @@
 
 ## Multilingual Editions of this Article
 
-- [English version of this ReadMe](./ReadMe.en-US.md)
+- [English version of this ReadMe](./documents/ReadMe.en-US.md)
 
 
 
@@ -94,22 +94,22 @@
 
 ```ts
 import {
-    createSingleTandomAJAXController,
+    createSingleTandemAJAXController,
 } from '@wulechuan/single-tandem-ajax'
 
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )
 
 
 
-type TTheResponseData = {
+type TYourResponseData = {
     name: string;
     favorite: string[];
 };
 
-const responseData = await singleTandomAJAX<TTheResponseData>({
+const responseData = await singleTandomAJAX<TYourResponseData>({
     requestType: '随便一个非空字符串，作为唯一标识即可',
     axiosRequestConfig: {
         method: 'POST',
@@ -133,17 +133,17 @@ console.log(responseData)
 
 ```js
 import {
-    createSingleTandomAJAXController,
+    createSingleTandemAJAXController,
 } from '@wulechuan/single-tandem-ajax'
 
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )
 
 
 
-type TTheResponseData = {
+type TYourResponseData = {
     name: string;
     favorite: string[];
 };
@@ -171,11 +171,11 @@ console.log(responseData)
 
 ### 构建函数
 
-构建函数名为 `createSingleTandomAJAXController`。它用于构建单串式 AJAX 控制器，控制器的类型为 `TSingleTandemAJAX`。
+构建函数名为 `createSingleTandemAJAXController`。它用于构建单串式 AJAX 控制器，控制器的类型为 `TSingleTandemAJAX`。
 
 众所周知，原版 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用。与之类似，借助本构建程序构建所谓“控制器”时，也可以预先配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
 
-本程序在幕后会调用 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`）。上述参数，实则是用于 `axios.create()`，以在构建 axios 实例函数时对其做配置。并且本构建函数（即 `createSingleTandomAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
+本程序在幕后会调用 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`）。上述参数，实则是用于 `axios.create()`，以在构建 axios 实例函数时对其做配置。并且本构建函数（即 `createSingleTandemAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
 
 另外，本工具发起 AJAX 请求时，默认也会在幕后采用上述构建出的 axios 实例函数。
 
@@ -186,7 +186,7 @@ console.log(responseData)
 ```ts
 import { AxiosRequestConfig } from 'axios'
 
-export function createSingleTandomAJAXController(
+export function createSingleTandemAJAXController(
     axiosRequestConfig?: AxiosRequestConfig
 ): TSingleTandemAJAX
 ```
@@ -268,7 +268,7 @@ async function singleTandemAJAX<TResponseData>(
 我们常常喜欢利用 axios 实例的 `interceptors` 属性来预先配置原始响应数据的预处理，仅传出原始响应数据的 `data` 属性。那么，再此，我们可以对 `preCreatedAxiosInstance` 做同样的配置。例如：
 
 ```ts
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )

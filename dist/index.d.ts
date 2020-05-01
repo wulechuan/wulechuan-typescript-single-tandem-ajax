@@ -3,12 +3,14 @@ export declare type TOnGoingAJAXPromises = {
     [requestType: string]: Promise<any>;
 };
 export declare type TSingleTandemAJAXOptions = {
+    axiosRequestConfig: string | AxiosRequestConfig;
     requestType?: string | number;
     axiosInstance?: AxiosInstance;
-    axiosRequestConfig: string | AxiosRequestConfig;
+    shouldDisableWarningOfSkippedAJAX?: boolean;
 };
 export declare type TSingleTandemAJAX = {
     <TResponseData>(options: TSingleTandemAJAXOptions): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
     preCreatedAxiosInstance: AxiosInstance;
 };
-export declare function createSingleTandomAJAXController(axiosRequestConfig?: AxiosRequestConfig): TSingleTandemAJAX;
+export declare const createSingleTandomAJAXController: typeof createSingleTandemAJAXController;
+export declare function createSingleTandemAJAXController(axiosRequestConfig?: AxiosRequestConfig): TSingleTandemAJAX;

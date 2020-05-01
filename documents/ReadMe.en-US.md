@@ -6,7 +6,7 @@
 
 ## Multilingual Editions of this Article
 
-- 《[本文之简体中文版](./ReadMe.md)》
+- 《[本文之简体中文版](../ReadMe.md)》
 
 
 
@@ -95,22 +95,22 @@ See the example below.
 
 ```ts
 import {
-    createSingleTandomAJAXController,
+    createSingleTandemAJAXController,
 } from '@wulechuan/single-tandem-ajax'
 
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )
 
 
 
-type TTheResponseData = {
+type TYourResponseData = {
     name: string;
     favorite: string[];
 };
 
-const responseData = await singleTandomAJAX<TTheResponseData>({
+const responseData = await singleTandomAJAX<TYourResponseData>({
     requestType: 'any non-empty string you prefer, as the unique id',
     axiosRequestConfig: {
         method: 'POST',
@@ -133,17 +133,17 @@ See the example below.
 
 ```js
 import {
-    createSingleTandomAJAXController,
+    createSingleTandemAJAXController,
 } from '@wulechuan/single-tandem-ajax'
 
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )
 
 
 
-type TTheResponseData = {
+type TYourResponseData = {
     name: string;
     favorite: string[];
 };
@@ -171,7 +171,7 @@ console.log(responseData)
 
 ### The Creator of Single Tandem AJAX Controllers
 
-The creator, is naturally a function, named `createSingleTandomAJAXController`. It is used to create a single tandem AJAX controller, of type `TSingleTandemAJAX`.
+The creator, is naturally a function, named `createSingleTandemAJAXController`. It is used to create a single tandem AJAX controller, of type `TSingleTandemAJAX`.
 
 Just like the original axios, this tool allows us to configure some common features beforehand, for a set of AJAX requests, or maybe **all** AJAX requests. Such as the `baseURL`, `timeout` and `headers`, etc. To configure AJAX controller beforehand, you provide one and the only one argument to the creator function.
 
@@ -187,7 +187,7 @@ The related source code snippet reads:
 ```ts
 import { AxiosRequestConfig } from 'axios'
 
-export function createSingleTandomAJAXController(
+export function createSingleTandemAJAXController(
     axiosRequestConfig?: AxiosRequestConfig
 ): TSingleTandemAJAX
 ```
@@ -267,7 +267,7 @@ The value type is `AxiosInstance`.
 As we often configure an axios instance of its `interceptors` property, to output the "pure" `data` property of the raw response, we can also do the same configuration to this `preCreatedAxiosInstance` property, like this:
 
 ```ts
-const singleTandomAJAX = createSingleTandomAJAXController()
+const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
     response => response.data
 )
