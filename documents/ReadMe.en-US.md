@@ -208,9 +208,10 @@ import { AxiosResponse } from 'axios'
 
 
 type TSingleTandemAJAXOptions = {
-    requestType?: string | number;
-    axiosInstance?: AxiosInstance;
-    axiosRequestConfig: string | AxiosRequestConfig;
+    axiosRequestConfig:                 string | AxiosRequestConfig;
+    requestType?:                       string | number;
+    axiosInstance?:                     AxiosInstance;
+    shouldDisableWarningOfSkippedAJAX?: boolean;
 };
 
 
@@ -224,7 +225,15 @@ async function singleTandemAJAX<TResponseData>(
 
 #### `options`
 
-The type of the options is `TSingleTandemAJAXOptions`. It contains 3 properties. Among them, 2 are optional, the 1 is required.
+The type of the options is `TSingleTandemAJAXOptions`. It contains 4 properties. Among them, 3 are optional, and 1 is required.
+
+
+##### `options.axiosRequestConfig`
+
+This property is **required**.
+
+The allow type is `AxiosRequestConfig`. As the type hints, the property is for configuring an AJAX request. And, just like using the original axios, this property is allowed to simplified to be just a string, treated as the URL of a `GET` request.
+
 
 
 ##### `options.requestType?`
@@ -246,11 +255,12 @@ In case you'd like to temporarily use a certain axios instance, you provide the 
 If you have already prepared a pre-built axios instance by passing an option to the controller creator, then you provide another axios instance here temporarily, the temporary axios instance is used, just this time.
 
 
-##### `options.axiosRequestConfig`
 
-This property is **required**.
+##### `options.shouldDisableWarningOfSkippedAJAX?`
 
-The allow type is `AxiosRequestConfig`. As the type hints, the property is for configuring an AJAX request. And, just like using the original axios, this property is allowed to simplified to be just a string, treated as the URL of a `GET` request.
+This property is optional.
+
+It's a value of Boolean type. The name describes the usage well, I think.
 
 
 #### The So-called Static Property

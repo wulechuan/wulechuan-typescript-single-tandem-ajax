@@ -207,9 +207,10 @@ import { AxiosResponse } from 'axios'
 
 
 type TSingleTandemAJAXOptions = {
-    requestType?: string | number;
-    axiosInstance?: AxiosInstance;
-    axiosRequestConfig: string | AxiosRequestConfig;
+    axiosRequestConfig:                 string | AxiosRequestConfig;
+    requestType?:                       string | number;
+    axiosInstance?:                     AxiosInstance;
+    shouldDisableWarningOfSkippedAJAX?: boolean;
 };
 
 
@@ -223,7 +224,14 @@ async function singleTandemAJAX<TResponseData>(
 
 #### `options`
 
-类型为 `TSingleTandemAJAXOptions`。其下有 3 个属性，其中 2 个可选，1 个必须。如下。
+类型为 `TSingleTandemAJAXOptions`。其下有 4 个属性，其中 3 个可选，1 个必须。如下。
+
+##### `options.axiosRequestConfig`
+
+本参数是必须的。
+
+其类型是 `AxiosRequestConfig`，不难猜测，本参数用于配置欲发起的 AJAX 请求。同时，参照原生的 axios 行为，本参数也可以简化为单一字符串，视作以 `GET` 方式发起的 AJAX 请求的 URL。
+
 
 ##### `options.requestType?`
 
@@ -243,11 +251,11 @@ async function singleTandemAJAX<TResponseData>(
 注意，即便在构建函数中预先构建好了 axios 实例，如果此参数（指 `options.axiosInstance`）临时提供了一个 axios 实例，则会采用该临时提供的 axios 实例，而不采用预先构建好的 axios 实例。
 
 
-##### `options.axiosRequestConfig`
+##### `options.shouldDisableWarningOfSkippedAJAX`
 
-本参数是必须的。
+本参数可以省略。
 
-其类型是 `AxiosRequestConfig`，不难猜测，本参数用于配置欲发起的 AJAX 请求。同时，参照原生的 axios 行为，本参数也可以简化为单一字符串，视作以 `GET` 方式发起的 AJAX 请求的 URL。
+其类型是布尔值。如果为 `true`，则会禁止本工具在浏览器控制台（Console）中打印警告信息。
 
 
 
