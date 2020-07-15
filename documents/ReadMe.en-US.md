@@ -143,11 +143,6 @@ singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
 
 
 
-type TYourResponseData = {
-    name: string;
-    favorite: string[];
-};
-
 const responseData = await singleTandomAJAX({
     requestType: 'any non-empty string you prefer, as the unique id',
     axiosRequestConfig: {
