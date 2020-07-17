@@ -1,40 +1,43 @@
 {
-  "name": "@wulechuan/single-tandem-ajax",
-  "author": "wulechuan <wulechuan@live.com>",
-  "version": "0.2.3",
-  "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
-  "license": "WTFPL",
-  "keywords": [
-    "axios",
-    "ajax",
-    "single-tandem",
-    "one-at-a-time",
-    "non-duplicated-ajax",
-    "单串式",
-    "同一时刻仅单一AJAX请求",
-    "避免同时发起多个完全相同的AJAX请求"
-  ],
-  "main": "source/index.ts",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "dist": "tsc  --outDir dist",
-    "start": "npm  run  dist",
-    "before-git-commit": "npm  i    &&    npm  run  dist",
-    "prepublishOnly": "npm  run  dist"
-  },
-  "homepage": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git/issues"
-  },
-  "dependencies": {
-    "axios": "^0.19.2"
-  },
-  "devDependencies": {
-    "@wulechuan/css-stylus-markdown-themes": "^6.4.12",
-    "typescript": "^3.8.3"
-  }
+    "name": "@wulechuan/single-tandem-ajax",
+    "author": "wulechuan <wulechuan@live.com>",
+    "version": "0.2.4",
+    "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
+    "license": "WTFPL",
+    "keywords": [
+        "axios",
+        "ajax",
+        "single-tandem",
+        "one-at-a-time",
+        "non-duplicated-ajax",
+        "单串式",
+        "同一时刻仅单一AJAX请求",
+        "避免同时发起多个完全相同的AJAX请求"
+    ],
+    "main": "source/index.ts",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "remove-all-html-docs": "rimraf  ./ReadMe.html  ./documents/**/*.html",
+        "generate-html-docs": "npm  run  remove-all-html-docs    &&    wlc-md-to-html  -i ./*.md,./documents/**/*.md  -E3  -C ./documents/wlc-md-to-html.config.js  --to '*'",
+        "dist": "tsc  --outDir dist",
+        "start": "npm  run  dist",
+        "before-git-commit": "npm  i                &&    npm  start",
+        "prepublishOnly": "rimraf  ./ReadMe.html    &&    npm  start"
+    },
+    "homepage": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git/issues"
+    },
+    "dependencies": {
+        "axios": "^0.19.2"
+    },
+    "devDependencies": {
+        "@wulechuan/css-stylus-markdown-themes": "^6.4.12",
+        "rimraf": "^3.0.2",
+        "typescript": "^3.9.7"
+    }
 }
