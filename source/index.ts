@@ -45,10 +45,14 @@ export function createSingleTandemAJAXController(
 
 
 
-    async function singleTandemAJAX<TResponseData>(
+    function singleTandemAJAX<TResponseData>(
         options: TSingleTandemAJAXOptions
     ): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined> {
-        if (!options) { return }
+        type TThisAJAXPromise = Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
+
+
+
+        if (!options) { return Promise.resolve(undefined) }
 
         const {
             requestType,
@@ -65,13 +69,12 @@ export function createSingleTandemAJAXController(
         }
 
         if (!axiosRequestConfig || !axiosRequestConfig.url || typeof axiosRequestConfig.url !== 'string') {
-            return
+            return Promise.resolve(undefined)
         }
 
         const requestTypeIsProvided = requestType !== undefined && requestType !== ''
         const requestTypeString = `${requestType}`
 
-        type TThisAJAXPromise = Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
 
         let onGoingAJAXPromise: TThisAJAXPromise | undefined
 
@@ -91,13 +94,13 @@ export function createSingleTandemAJAXController(
             }
         }
 
-        const rawResponseOrResponseData = await onGoingAJAXPromise
+        onGoingAJAXPromise.finally(() => {
+            if (requestTypeIsProvided) {
+                delete onGoingAJAXPromises[requestTypeString]
+            }
+        })
 
-        if (requestTypeIsProvided) {
-            delete onGoingAJAXPromises[requestTypeString]
-        }
-
-        return rawResponseOrResponseData
+        return onGoingAJAXPromise
     }
 
 
