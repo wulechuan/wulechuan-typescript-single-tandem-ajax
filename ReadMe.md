@@ -1,11 +1,16 @@
+<link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/dist/css/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
+
+
 # 吴乐川的单串式 AJAX 控制器
 
-<link rel="stylesheet" href="./node_modules/@wulechuan/css-stylus-markdown-themes/dist/css/wulechuan-styles-for-html-via-markdown--vscode.default.min.css">
+> 中国人——特别是汉族人，理应坚持广泛、规范地使用汉语。凡非必要之情形不说外国话、不用外国字。此乃天经地义！然则每当必要，亦不排斥采用外国之语言。不妨 **博世界之学问，养中国之精神** 。
+>
+> 本人亦支持少数民族坚持采用自己民族的传统语言。仍须强调，凡中国人，皆应会用汉语、积极使用汉语，此乃中华各民族之大一统之必由。
 
 
 ## Multilingual Editions of this Article
 
-- [English version of this ReadMe](./documents/ReadMe.en-US.md)
+- [English version of this ReadMe](./文档/说明书/ReadMe.en-US.md)
 
 
 
@@ -23,6 +28,15 @@
 <dd><p>南昌吴乐川</p></dd>
 </dl>
 
+
+
+## 源代码仓库
+
+| <span style="display:inline-block;width:10em;">提供仓库服务之组织</span> | <span style="display:inline-block;width:9em;">仓库组织之国别</span> | 仓库地址 |
+| ------------- | :----------: | ------- |
+| 码云           | 中华人民共和国 | [https://gitee.com/nanchang-wulechuan/wulechuan-typescript-single-tandem-ajax.git](https://gitee.com/nanchang-wulechuan/wulechuan-typescript-single-tandem-ajax.git) |
+| 阿里云之代码仓库 | 中华人民共和国 | [https://code.aliyun.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git](https://code.aliyun.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git) |
+| GitHub         | 美           | [https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git](https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git) |
 
 
 
@@ -91,7 +105,7 @@
 
 见下例。
 
-> 注意！采用本工具之 TypeScript 版本时，`import` 语句的 `from` 指向 npm 包名，即指向 npm 包的 `main` 文件。实际上，指向的是 `./source/index.ts`。
+> 注意！采用本工具之 TypeScript 版本时，`import` 语句的 `from` 指向 npm 包名，即指向 npm 包的 `main` 文件。实际上，指向的是 `./源代码/原始的-typescript-版本/index.ts` 。
 
 ```ts
 import {
@@ -130,12 +144,12 @@ console.log(responseData)
 见下例。
 
 
-> 注意！采用本工具之 JavaScript 版本时，`import` 语句的 `from` 指向 `./dist`。实际上，指向的是 `./dist/index.js`。
+> 注意！采用本工具之 JavaScript 版本时，`import` 语句的 `from` 指向 `./dist`。实际上，指向的是 `./源代码/编译得到的-javascript-版本/index.js`。
 
 ```js
 import {
     createSingleTandemAJAXController,
-} from '@wulechuan/single-tandem-ajax'
+} from '@wulechuan/single-tandem-ajax/源代码/编译得到的-javascript-版本'
 
 const singleTandomAJAX = createSingleTandemAJAXController()
 singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
@@ -145,7 +159,7 @@ singleTandomAJAX.preCreatedAxiosInstance.interceptors.response.use(
 
 
 const responseData = await singleTandomAJAX({
-    requestType: '随便一个非空字符串，作为唯一标识即可',
+    requestType: '随便一个非空字符串，即可作为唯一标识',
     axiosRequestConfig: {
         method: 'POST',
         url: 'https://nan-chang.wulechuan.cn/non-exsiting/restful-api/update-info',
@@ -171,7 +185,9 @@ console.log(responseData)
 
 众所周知，原版 axios 允许预先配置一些公共的信息，例如 `baseURL`、`timeout` 和 `headers` 等，以方便之后使用。与之类似，借助本构建程序构建所谓“控制器”时，也可以预先配置好上述公共信息。欲预先配置上述信息，则在调用该构建程序时，须提供唯一的参数。
 
-本程序在幕后会调用 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`）。上述参数，实则是用于 `axios.create()`，以在构建 axios 实例函数时对其做配置。并且本构建函数（即 `createSingleTandemAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig`，之与 `axios.create()` 入口参数之类型吻合。参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
+本程序在幕后会调用 `axios.create()`，得到一个 axios 实例函数（类型为 `axiosInstance`）。上述参数，实则是用于 `axios.create()`，以在构建 axios 实例函数时对其做配置。并且本构建函数（即 `createSingleTandemAJAXController` ）的唯一入口参数之类型正是 `AxiosRequestConfig` 之类型，与 `axios.create()` 入口参数之类型吻合。
+
+> 参阅《[axios 官方文档的相关部分](https://www.npmjs.com/package/axios#axioscreateconfig)》。
 
 另外，本工具发起 AJAX 请求时，默认也会在幕后采用上述构建出的 axios 实例函数。
 

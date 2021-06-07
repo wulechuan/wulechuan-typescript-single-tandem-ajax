@@ -1,6 +1,4 @@
 import axios from 'axios';
-// 旧版本采用了含错别字的函数名，在此也故意保留该旧版函数名。
-export const createSingleTandomAJAXController = createSingleTandemAJAXController;
 export function createSingleTandemAJAXController(axiosRequestConfig) {
     const onGoingAJAXPromises = {};
     const preCreatedAxiosInstance = axios.create(axiosRequestConfig);
@@ -46,4 +44,3 @@ export function createSingleTandemAJAXController(axiosRequestConfig) {
     }
     return singleTandemAJAX;
 }
-//# sourceMappingURL=index.js.map

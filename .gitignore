@@ -1,5 +1,8 @@
-.DS_Store
+.vs/**/*
 node_modules
-/ReadMe.*.html
-/ReadMe.html
-/documents/**/*.html
+
+临时文件
+
+文档/**/*.html
+
+ReadMe*.html

@@ -12,5 +12,4 @@ export declare type TSingleTandemAJAX = {
     <TResponseData>(options: TSingleTandemAJAXOptions): Promise<AxiosResponse<TResponseData | undefined> | TResponseData | undefined>;
     preCreatedAxiosInstance: AxiosInstance;
 };
-export declare const createSingleTandomAJAXController: typeof createSingleTandemAJAXController;
 export declare function createSingleTandemAJAXController(axiosRequestConfig?: AxiosRequestConfig): TSingleTandemAJAX;

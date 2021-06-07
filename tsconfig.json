@@ -5,10 +5,10 @@
         "strict": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
-        "sourceMap": true,
+        "sourceMap": false,
         "declaration": true
     },
     "files": [
-        "source/index.ts"
+        "源代码/原始的-typescript-版本/index.ts"
     ]
 }

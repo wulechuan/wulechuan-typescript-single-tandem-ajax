@@ -6,7 +6,7 @@
 
 ## Multilingual Editions of this Article
 
-- 《[本文之简体中文版](../ReadMe.md)》
+- 《[本文之简体中文版](../../ReadMe.md)》
 
 
 

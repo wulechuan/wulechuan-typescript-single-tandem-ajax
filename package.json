@@ -5,21 +5,22 @@
     "description": "避免同时发起多个完全相同的 AJAX 请求。并支持 TypeScript 语法。",
     "license": "WTFPL",
     "keywords": [
+        "单串式",
+        "同一时刻仅单一AJAX请求",
+        "避免同时发起多个完全相同的AJAX请求",
+        "可取消的AJAX请求",
         "axios",
         "ajax",
         "single-tandem",
         "one-at-a-time",
-        "non-duplicated-ajax",
-        "单串式",
-        "同一时刻仅单一AJAX请求",
-        "避免同时发起多个完全相同的AJAX请求"
+        "non-duplicated-ajax"
     ],
-    "main": "source/index.ts",
+    "main": "源代码/index.ts",
     "types": "dist/index.d.ts",
     "scripts": {
-        "remove-all-html-docs": "rimraf  ./ReadMe.html  ./documents/**/*.html",
-        "generate-html-docs": "npm  run  remove-all-html-docs    &&    wlc-md-to-html  -i ./*.md,./documents/**/*.md  -E3  -C ./documents/wlc-md-to-html.config.js  --to '*'",
-        "dist": "tsc  --outDir dist",
+        "remove-all-html-docs": "rimraf  ./ReadMe.html  ./文档/**/*.html",
+        "generate-html-docs": "npm  run  remove-all-html-docs    &&    wlc-md-to-html  -i ./*.md,./文档/**/*.md  -E3  -C ./文档/wlc-md-to-html.config.js  --to '*'",
+        "dist": "tsc  --outDir 源代码/编译得到的-javascript-版本",
         "start": "npm  run  dist",
         "before-git-commit": "npm  i                &&    npm  start",
         "prepublishOnly": "rimraf  ./ReadMe.html    &&    npm  start"
@@ -33,11 +34,11 @@
         "url": "https://github.com/wulechuan/wulechuan-typescript-single-tandem-ajax.git/issues"
     },
     "dependencies": {
-        "axios": "^0.19.2"
+        "axios": "^0.21.1"
     },
     "devDependencies": {
         "@wulechuan/css-stylus-markdown-themes": "^6.4.12",
         "rimraf": "^3.0.2",
-        "typescript": "^3.9.7"
+        "typescript": "^4.3.2"
     }
 }

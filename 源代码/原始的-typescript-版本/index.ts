@@ -27,11 +27,6 @@ export type TSingleTandemAJAX = {
 
 
 
-// 旧版本采用了含错别字的函数名，在此也故意保留该旧版函数名。
-export const createSingleTandomAJAXController = createSingleTandemAJAXController
-
-
-
 
 export function createSingleTandemAJAXController(
     axiosRequestConfig?: AxiosRequestConfig

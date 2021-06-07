@@ -1,23 +1,19 @@
-/documents
-
-
-
-node_modules
-
-
-
-git*.sh
-
-
-
-.DS_Store
 .circleci
+.vs/**/*
 .vscode
-tsconfig*
-.eslint*
-.markdownlint*
 
+临时文件
 
+.eslintignore
+.eslintrc.js
+.markdownlint.json
 
+*.sh
+*.ps1
+
+用于研发阶段的命令行工具
+
+文档
 ReadMe*.html
-/dist/*.map
+
+测试集
