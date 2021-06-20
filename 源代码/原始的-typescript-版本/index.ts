@@ -2,12 +2,19 @@ import axios, {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
+    CancelToken,
+    CancelTokenSource,
 } from 'axios'
 
+const { CancelToken } = axios
+
+const messagePrefix1 = '吴乐川的单串式AJAX控制器（ @wulechuan/single-tandem-ajax ）：'
+const messagePrefix2 = '@wulechuan/single-tandem-ajax:'
 
 
 
-type 类型定义之发起新AJAX时若已存在同型号在行AJAX时之应对策略 = (
+
+export type 类型定义之发起新AJAX时若已存在同型号在行AJAX时之应对策略 = (
     | '允许反复发起同型号的 AJAX 请求'
     | '先中止业已在行之同型号 AJAX 请求，再发起新的 AJAX 请求'
     | '若有同型号 AJAX 业已在行，则等待之，而不再发起新的 AJAX 请求'
@@ -19,20 +26,23 @@ export type TPolicyOfStartingNewAJAX = (
     | 'wait for exiting AJAX of the same type and not start new AJAX'
 )
 
-export type 类型定义之在行各AJAX之记录字典 = {
-    [requestType: string]: TConfigOfSingleOnGoingAJAX;
+export type 类型定义之各型号所有在行AJAX记录之字典 = {
+    [requestType: string]: 类型定义之单一型号所有在行AJAX之公共记录;
 };
 
 export type 类型定义之AJAX型号 = string | number;
 
-export type 类型定义之单条在行AJAX记录 = {
+export type 类型定义之单一型号所有在行AJAX之公共记录 = {
     该AJAX完结之诺: Promise<any>;
-    取消该AJAX: () => void;
+    // promiseOfLastAjaxSettled: Promise<any>;
+
+    用以取消该型号所有AJAX之公共配置?: CancelTokenSource;
+    // cancelTokenSourceOfAllAjaxesOfThisType?: CancelTokenSource;
 };
 
 export type TAJAXRequestType = 类型定义之AJAX型号;
-export type TDictOfOnGoingAJAXs = 类型定义之在行各AJAX之记录字典;
-export type TConfigOfSingleOnGoingAJAX = 类型定义之单条在行AJAX记录;
+export type TDictOfAllRequestTypesOfAllOnGoingAJAXes = 类型定义之各型号所有在行AJAX记录之字典;
+export type TRecordOfSingleRequestTypeAllOnGoingAJAXes = 类型定义之单一型号所有在行AJAX之公共记录;
 export type TSingleTandemAJAXOptions = 类型定义之单串式AJAX控制器之配置项;
 
 export type 类型定义之单串式AJAX控制器之配置项 = {
@@ -53,10 +63,9 @@ export type 类型定义之单串式AJAX控制器之配置项 = {
 
 
 
-export type 类型定义之单串式AJAX控制器 = {
-    <外来类型定义之AJAX响应之Data>(options: 类型定义之单串式AJAX控制器之配置项): Promise<(
-        | AxiosResponse<外来类型定义之AJAX响应之Data | undefined>
-        | 外来类型定义之AJAX响应之Data
+export type 类型定义之单串式AJAX控制器<TResponseData = any> = {
+    (options: 类型定义之单串式AJAX控制器之配置项): Promise<(
+        | AxiosResponse<TResponseData>
         | undefined
     )>;
 
@@ -64,9 +73,8 @@ export type 类型定义之单串式AJAX控制器 = {
     取消该型号之AJAX请求: (欲取消之AJAX之型号: 类型定义之AJAX型号) => void;
     取消该控制器所辖一切AJAX请求: () => void;
 
-    <TResponseData>(options: TSingleTandemAJAXOptions): Promise<(
-        | AxiosResponse<TResponseData | undefined>
-        | TResponseData
+    (options: TSingleTandemAJAXOptions): Promise<(
+        | AxiosResponse<TResponseData>
         | undefined
     )>;
 
@@ -81,24 +89,40 @@ export type TSingleTandemAJAX = 类型定义之单串式AJAX控制器;
 
 
 
-function _取消该型号之AJAX请求(各AJAX之记录字典: 类型定义之在行各AJAX之记录字典, 该AJAX之型号: 类型定义之AJAX型号): void {
+function _取消该型号所有在行AJAX请求(各AJAX之记录字典: 类型定义之各型号所有在行AJAX记录之字典, 该AJAX之型号: 类型定义之AJAX型号): void {
     const 查得记录 = 各AJAX之记录字典[该AJAX之型号]
-    if (!查得记录 || typeof 查得记录.取消该AJAX !== 'function') {
+    if (!查得记录) {
         return
     }
 
-    查得记录.取消该AJAX()
+    const { 用以取消该型号所有AJAX之公共配置 } = 查得记录
+    if (!用以取消该型号所有AJAX之公共配置 ) {
+        return
+    }
+
+    const { cancel, token } = 用以取消该型号所有AJAX之公共配置
+    if (!(token instanceof CancelToken) || typeof cancel !== 'function') {
+        return
+    }
+
+    cancel()
     delete 各AJAX之记录字典[该AJAX之型号]
 }
 
-export function createSingleTandemAJAXController(axiosRequestInitialConfig?: AxiosRequestConfig): TSingleTandemAJAX {
+
+
+export function createSingleTandemAJAXController(
+    axiosRequestInitialConfig?: AxiosRequestConfig
+): TSingleTandemAJAX {
     return 构建单串式AJAX控制器(axiosRequestInitialConfig)
 }
+
+
 
 export function 构建单串式AJAX控制器(
     axios请求之预设配置?: AxiosRequestConfig
 ): 类型定义之单串式AJAX控制器 {
-    const 各AJAX之记录字典: 类型定义之在行各AJAX之记录字典 = {}
+    const 各AJAX之记录字典: 类型定义之各型号所有在行AJAX记录之字典 = {}
 
 
 
@@ -106,17 +130,17 @@ export function 构建单串式AJAX控制器(
 
     本单串式AJAX控制器.该控制器预备的Axios实例 = 该控制器预备的Axios实例
     本单串式AJAX控制器.取消该型号之AJAX请求 = function (欲取消之AJAX之型号: 类型定义之AJAX型号): void {
-        _取消该型号之AJAX请求(各AJAX之记录字典, 欲取消之AJAX之型号)
+        _取消该型号所有在行AJAX请求(各AJAX之记录字典, 欲取消之AJAX之型号)
     }
     本单串式AJAX控制器.取消该控制器所辖一切AJAX请求 = function (): void {
         Object.keys(各AJAX之记录字典).forEach(某AJAX之型号 => {
-            _取消该型号之AJAX请求(各AJAX之记录字典, 某AJAX之型号)
+            _取消该型号所有在行AJAX请求(各AJAX之记录字典, 某AJAX之型号)
         })
     }
 
     本单串式AJAX控制器.preCreatedAxiosInstance = 该控制器预备的Axios实例
     本单串式AJAX控制器.cancelTheAJAXOfThisType = function (theRequestType: TAJAXRequestType): void {
-        _取消该型号之AJAX请求(各AJAX之记录字典, theRequestType)
+        _取消该型号所有在行AJAX请求(各AJAX之记录字典, theRequestType)
     }
     本单串式AJAX控制器.cancelAll = 本单串式AJAX控制器.取消该控制器所辖一切AJAX请求
 
@@ -207,22 +231,21 @@ export function 构建单串式AJAX控制器(
 
 
 
+        let 旧有诺: 类型定义之本次AJAX之响应之诺 | undefined
         let 诺: 类型定义之本次AJAX之响应之诺 | undefined
+        let 同类型AJAX之管理记录: 类型定义之单一型号所有在行AJAX之公共记录 | undefined
 
         if (_本次AJAX确已标明型号) {
-            const 查得记录 = 各AJAX之记录字典[_该AJAX之型号之字符串值]
-            if (查得记录) {
-                诺 = 查得记录.该AJAX完结之诺
+            同类型AJAX之管理记录 = 各AJAX之记录字典[_该AJAX之型号之字符串值]
+            if (同类型AJAX之管理记录) {
+                旧有诺 = 同类型AJAX之管理记录.该AJAX完结之诺
             }
         }
 
-        let 应当发起新的AJAX请求 = false
-        if (诺 instanceof Promise) {
+        if (旧有诺 instanceof Promise) {
             if (_应对策略 === '允许反复发起同型号的 AJAX 请求') {
-                应当发起新的AJAX请求 = true
             } else if (_应对策略 === '先中止业已在行之同型号 AJAX 请求，再发起新的 AJAX 请求') {
-                _取消该型号之AJAX请求(各AJAX之记录字典, _该AJAX之型号之字符串值)
-                应当发起新的AJAX请求 = true
+                _取消该型号所有在行AJAX请求(各AJAX之记录字典, _该AJAX之型号之字符串值)
 
                 let 应当打印警告信息 = true
                 if (应禁止在控制台打印关于在行AJAX被取消的警告信息 !== undefined && 应禁止在控制台打印关于在行AJAX被取消的警告信息 !== null) {
@@ -232,11 +255,11 @@ export function 构建单串式AJAX控制器(
                 }
 
                 if (应当打印警告信息) {
-                    console.warn(`另有一个同型号之 AJAX 业已在行。因欲发起新的 AJAX，在行 AJAX 已中止。\n所涉型号：“${_该AJAX之型号之字符串值}”。`)
-                    console.warn(`An already on going AJAX request has canceled due to the "requestType" being the same as that of the coming new AJAX.\nThe requestType is "${_该AJAX之型号之字符串值}".`)
+                    console.warn(`${messagePrefix1} 另有一个同型号之 AJAX 业已在行。因欲发起新的 AJAX，在行 AJAX 已中止。\n所涉型号：“${_该AJAX之型号之字符串值}”。`)
+                    console.warn(`${messagePrefix2} An already on going AJAX request has canceled due to the "requestType" being the same as that of the coming new AJAX.\nThe requestType is "${_该AJAX之型号之字符串值}".`)
                 }
-            } else {
-                应当发起新的AJAX请求 = false
+            } else if (_应对策略 === '若有同型号 AJAX 业已在行，则等待之，而不再发起新的 AJAX 请求') {
+                诺 = 旧有诺
 
                 let 应当打印警告信息 = true
                 if (应禁止在控制台打印关于新AJAX被堵截的警告信息 !== undefined && 应禁止在控制台打印关于新AJAX被堵截的警告信息 !== null) {
@@ -246,15 +269,13 @@ export function 构建单串式AJAX控制器(
                 }
 
                 if (应当打印警告信息) {
-                    console.warn(`另有一个同型号之 AJAX 业已在行。新的 AJAX 已作罢。\n所涉型号：“${_该AJAX之型号之字符串值}”。`)
-                    console.warn(`An AJAX request is skipped due to another AJAX of the same "requestType" is on going.\nThe requestType is "${_该AJAX之型号之字符串值}".`)
+                    console.warn(`${messagePrefix1} 另有一个同型号之 AJAX 业已在行。新的 AJAX 已作罢。\n所涉型号：“${_该AJAX之型号之字符串值}”。`)
+                    console.warn(`${messagePrefix2} An AJAX request has skipped due to another AJAX of the same "requestType" is on going.\nThe requestType is "${_该AJAX之型号之字符串值}".`)
                 }
             }
-        } else {
-            应当发起新的AJAX请求 = true
         }
 
-        if (应当发起新的AJAX请求) {
+        if (!诺) {
             let 最终采纳的Axios实例: AxiosInstance = 该控制器预备的Axios实例
 
             if (该AJAX要求采用的Axios实例) {
@@ -263,18 +284,71 @@ export function 构建单串式AJAX控制器(
                 最终采纳的Axios实例 = axiosInstance
             }
 
-            诺 = 最终采纳的Axios实例(_最终决定的Axios请求之配置)
-
             const {
-                cancelToken, // TODO
+                cancelToken,
             } = _最终决定的Axios请求之配置
 
+            let 取消之功能须由外部代码自行管理 = false
+
+            if (cancelToken instanceof CancelToken) {
+                取消之功能须由外部代码自行管理 = true
+                console.warn(`${messagePrefix1} 本工具内部采用 Axios 。因 Axios 原初设计所限，本工具无法管理外部给出的 cancelToken 。故本次 AJAX 请求之取消功能不归本工具管理。`)
+                console.warn(`${messagePrefix2} This tool utilies Axios internally. Due to the limitation of Axios design, this tool is not able to manage the cancelToken provided via the "Options". Thus, although the AJAX can be canceled, the cancelation must handled outside this tool.`)
+            } else {
+                if (cancelToken) {
+                    console.warn(`${messagePrefix1} 配置项中给出的 cancelToken 无效。已废弃。`)
+                    console.warn(`${messagePrefix2} The "cancelToken" provided by the "Options" is invalid. Thus is ignored.`)
+                }
+            }
+
+            let 用以取消该型号所有AJAX之公共配置: CancelTokenSource | undefined
+            let 用以取消该型号所有AJAX之公共令牌: CancelToken | undefined
+
             if (_本次AJAX确已标明型号) {
-                各AJAX之记录字典[_该AJAX之型号之字符串值] = {
-                    该AJAX完结之诺: 诺,
-                    取消该AJAX () {
-                        // TODO
-                    },
+                if (!取消之功能须由外部代码自行管理) {
+                    if (同类型AJAX之管理记录) {
+                        const {
+                            用以取消该型号所有AJAX之公共配置: 用以取消之公共配置,
+                        } = 同类型AJAX之管理记录
+
+                        if (用以取消之公共配置) {
+                            用以取消该型号所有AJAX之公共配置 = 用以取消之公共配置
+                            用以取消该型号所有AJAX之公共令牌 = 用以取消该型号所有AJAX之公共配置.token
+                        }
+                    }
+
+                    if (!用以取消该型号所有AJAX之公共配置) {
+                        用以取消该型号所有AJAX之公共配置 = CancelToken.source()
+                    }
+                }
+            }
+
+            if (用以取消该型号所有AJAX之公共令牌) {
+                _最终决定的Axios请求之配置.cancelToken = 用以取消该型号所有AJAX之公共令牌
+            }
+
+
+
+            诺 = 最终采纳的Axios实例(_最终决定的Axios请求之配置)
+
+
+
+            if (_本次AJAX确已标明型号) {
+                if (同类型AJAX之管理记录) {
+                    同类型AJAX之管理记录.该AJAX完结之诺 = 诺
+                    // 同类型AJAX之管理记录.promiseOfLastAjaxSettled = 诺
+                } else {
+                    各AJAX之记录字典[_该AJAX之型号之字符串值] = {
+                        该AJAX完结之诺: 诺,
+                        // promiseOfLastAjaxSettled: 诺,
+                    }
+
+                    同类型AJAX之管理记录 = 各AJAX之记录字典[_该AJAX之型号之字符串值]
+                }
+                
+                if (用以取消该型号所有AJAX之公共配置) {
+                    同类型AJAX之管理记录.用以取消该型号所有AJAX之公共配置 = 用以取消该型号所有AJAX之公共配置
+                    // 同类型AJAX之管理记录.cancelTokenSourceOfAllAjaxesOfThisType = 用以取消该型号所有AJAX之公共配置
                 }
             }
 
@@ -285,7 +359,7 @@ export function 构建单串式AJAX控制器(
             })
         }
 
-        return 诺 as 类型定义之本次AJAX之响应之诺
+        return 诺
     }
 
 
