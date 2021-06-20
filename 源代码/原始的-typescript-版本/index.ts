@@ -345,18 +345,17 @@ export function 构建单串式AJAX控制器(
 
                     同类型AJAX之管理记录 = 各AJAX之记录字典[_该AJAX之型号之字符串值]
                 }
-                
+
                 if (用以取消该型号所有AJAX之公共配置) {
                     同类型AJAX之管理记录.用以取消该型号所有AJAX之公共配置 = 用以取消该型号所有AJAX之公共配置
                     // 同类型AJAX之管理记录.cancelTokenSourceOfAllAjaxesOfThisType = 用以取消该型号所有AJAX之公共配置
                 }
-            }
 
-            诺.finally(() => {
-                if (_本次AJAX确已标明型号) {
+                诺.finally(() => {
+                    // FIXME 如果允许多个同型号 AJAX 并行，则此处草率 delete 记录是不妥的，可能导致早先在行之诺无法取消。
                     delete 各AJAX之记录字典[_该AJAX之型号之字符串值]
-                }
-            })
+                })
+            }
         }
 
         return 诺
